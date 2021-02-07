@@ -10,9 +10,11 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    # your code goes here
+    file = open(file_path)
+    text = file.read()
+    file.close()
 
-    return 'Contents of your file as one long string'
+    return text
 
 
 def make_chains(text_string):
@@ -41,18 +43,54 @@ def make_chains(text_string):
     """
 
     chains = {}
+    words = text_string.split()
 
-    # your code goes here
+    words.append(None)
 
-    return chains
+    for i in range(len(words) - 2):        
+
+        words_tuple = (words[i], words[i + 1])
+        word_value = words[i + 2]        
+
+        if words_tuple not in chains:
+            chains[words_tuple] = []
+
+        chains[words_tuple].append(word_value)
+
+
+    return chains 
+
+    # for i in range(len(words) - 2):
+    #     key = (words[i], words[i + 1])
+    #     value = words[i + 2]
+
+    #     if key not in chains:
+    #         chains[key] = []
+
+    #     chains[key].append(value)   
+
+    # #print(chains)
+    # return chains 
+
+    #tuples not in the dict yet or it's already there and we need to locate it and append it
 
 
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
+    key = choice(list(chains.keys()))
+    words = [key[0], key[1]]
+    word = choice(chains[key])
 
-    # your code goes here
+    # Keep looping until we reach a value of None
+    # (which would mean it was the end of our original text)
+    # Note that for long texts (like a full book), this might mean
+    # it would run for a very long time.
+
+    while word is not None:
+        key = (key[1], word)
+        words.append(word)
+        word = choice(chains[key])
 
     return ' '.join(words)
 
